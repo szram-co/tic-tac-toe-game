@@ -1,0 +1,198 @@
+@use 'sass:math';
+
+$line-animation-speed: 0.5s;
+$line-animation-finish-delay: 2s;
+
+.game-player {
+  flex: 1;
+  top: -0.5rem;
+  position: relative;
+  color: inherit;
+  opacity: 0;
+  transition: 0.3s transform ease;
+
+  &:first-of-type {
+    text-align: right;
+    animation: show-player-1 0.5s ease-out forwards;
+    animation-delay: #{$line-animation-finish-delay};
+    right: 2rem;
+
+    @keyframes show-player-1 {
+      to {
+        right: 0;
+        opacity: 1;
+      }
+    }
+  }
+
+  &:last-of-type {
+    animation: show-player-2 0.5s ease-out forwards;
+    animation-delay: #{$line-animation-finish-delay};
+    left: 2rem;
+
+    @keyframes show-player-2 {
+      to {
+        left: 0;
+        opacity: 1;
+      }
+    }
+  }
+
+  &--current {
+    color: var(--color-5);
+    transform: scale(1.2);
+  }
+
+  &__label {
+    opacity: 0.5;
+    margin-bottom: 0.25rem;
+  }
+
+  &__name {
+    font-size: 2rem;
+    text-transform: uppercase;
+  }
+}
+
+.game-board-container {
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  animation: game-active 0s linear forwards;
+  animation-delay: #{$line-animation-finish-delay};
+
+  @keyframes game-active {
+    to {
+      pointer-events: auto;
+    }
+  }
+}
+
+.game-board {
+  $cell-size: 8rem;
+  $cell-gap: 0.25rem;
+
+  display: grid;
+  grid-template-rows: repeat(3, $cell-size);
+  grid-template-columns: repeat(3, $cell-size);
+  gap: $cell-gap;
+  position: relative;
+  padding: math.div($cell-gap, 2);
+  border-radius: $cell-gap * 2;
+
+  &__cell {
+    width: $cell-size;
+    height: $cell-size;
+    transition: 0.3s all ease-in-out;
+    border-radius: $cell-gap * 2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &:hover {
+      background: rgba(#fff, 0.025);
+    }
+
+    &--circle {
+      background: red;
+    }
+
+    &--cross {
+      background: blue;
+    }
+  }
+
+  &__lines {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    .line {
+      position: absolute;
+      width: math.div($cell-gap, 1.5);
+      height: math.div($cell-gap, 1.5);
+      border-radius: math.div($cell-gap, 2);
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+      background: #fff;
+      opacity: 0;
+
+      &:nth-child(1) {
+        left: 33.5%;
+        animation: draw-line-horizontal $line-animation-speed ease-out forwards;
+      }
+
+      &:nth-child(2) {
+        animation: draw-line-horizontal $line-animation-speed ease-out forwards;
+        animation-delay: $line-animation-speed;
+        left: 66.5%;
+      }
+
+      &:nth-child(3) {
+        animation: draw-line-vertical $line-animation-speed ease-out forwards;
+        animation-delay: $line-animation-speed * 2;
+        top: 33.5%;
+      }
+
+      &:nth-child(4) {
+        animation: draw-line-vertical $line-animation-speed ease-out forwards;
+        animation-delay: $line-animation-speed * 3;
+        top: 66.5%;
+      }
+
+      @keyframes draw-line-horizontal {
+        to {
+          opacity: 1;
+          height: 100%;
+        }
+      }
+
+      @keyframes draw-line-vertical {
+        to {
+          opacity: 1;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.game-player-move {
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--color-5);
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(1.25);
+
+  animation: show-player-move #{$line-animation-speed} ease-out forwards;
+  animation-delay: #{$line-animation-finish-delay};
+
+  @keyframes show-player-move {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  strong {
+    margin-top: 0.5rem;
+    display: block;
+    font-size: 1.5rem;
+  }
+}

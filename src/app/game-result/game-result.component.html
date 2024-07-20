@@ -1,0 +1,15 @@
+<div class="container container--center">
+  <div class="text-tip">
+    <ng-container *ngIf="winner">Zwycięzca może być tylko jeden!</ng-container>
+    <ng-container *ngIf="draw">Cóż za wspaniała rozgrywka!</ng-container>
+  </div>
+  <h1>
+    <ng-container *ngIf="winner">{{ winner }}</ng-container>
+    <ng-container *ngIf="draw">Remis</ng-container>
+  </h1>
+
+  <div class="form-wrapper">
+    <button mat-raised-button (click)="goToHome()">Zmień graczy</button>
+    <button mat-raised-button (click)="restartGame()">Kolejna runda</button>
+  </div>
+</div>

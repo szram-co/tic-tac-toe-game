@@ -1,0 +1,82 @@
+<div class="game-wrapper game-wrapper--vertical">
+  <div class="game-title">
+    <h1>Kółko i Krzyżyk</h1>
+    <p>Wprowadź nazwy graczy</p>
+  </div>
+  <form class="game-form" [formGroup]="playersForm" (ngSubmit)="onSubmit()">
+    <div class="game-form-fields">
+      <div class="game-form-field">
+        <label for="player1">Nazwa gracza #1</label>
+        <input
+          id="player1"
+          formControlName="player1"
+          required
+          [appAutofocus]="!isGameCreated"
+        />
+      </div>
+      <div class="game-form-field">
+        <label for="player2">Nazwa gracza #2</label>
+        <input
+          id="player2"
+          formControlName="player2"
+          required
+          [ngClass]="{
+            error: playersForm.hasError('samePlayerNames'),
+          }"
+        />
+      </div>
+    </div>
+    <div
+      class="game-form-errors"
+      *ngIf="playersForm.hasError('samePlayerNames')"
+    >
+      <span>Nazwy graczy nie mogą być takie same</span>
+    </div>
+    <div class="game-form-buttons">
+      <button class="primary" type="submit" [disabled]="playersForm.invalid">
+        Rozpocznij grę
+      </button>
+      <ng-container *ngIf="isGameCreated">
+        <button
+          class="secondary small"
+          type="submit"
+          (click)="clearStoredData($event)"
+        >
+          Wyczyść dane
+        </button>
+      </ng-container>
+    </div>
+  </form>
+</div>
+
+<!--
+<div class="container container--center">
+  <div class="text-tip">Wprowadź nazwy graczy</div>
+  <form [formGroup]="playersForm" (ngSubmit)="onSubmit()">
+    <div class="form-wrapper">
+      <mat-form-field>
+        <mat-label>Nazwa gracza 1</mat-label>
+        <input matInput formControlName="player1" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nazwa gracza 2</mat-label>
+        <input matInput formControlName="player2" required />
+      </mat-form-field>
+    </div>
+    <div class="form-wrapper">
+      <button mat-raised-button type="submit" [disabled]="playersForm.invalid">
+        Rozpocznij grę
+      </button>
+
+      <button
+        *ngIf="isGameCreated"
+        mat-raised-button
+        type="submit"
+        (click)="clearStoredData($event)"
+      >
+        Wyczyść dane
+      </button>
+    </div>
+  </form>
+</div>
+-->

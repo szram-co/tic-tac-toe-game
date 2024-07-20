@@ -1,0 +1,90 @@
+$form-gap: 1rem;
+
+.game-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  gap: $form-gap;
+  text-align: center;
+
+  label {
+    color: var(--color-5);
+  }
+
+  input {
+    width: 100%;
+    font-size: 1.25rem;
+    background: transparent;
+    margin: 0;
+    color: var(--color-6);
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border: 2px solid var(--color-6);
+    transition: 0.3s all ease-out;
+    text-transform: uppercase;
+
+    &:not(.error):focus-visible {
+      border-color: var(--color-5);
+      outline: 4px solid transparent;
+      animation: 1s outline-pulse ease-out infinite;
+
+      @keyframes outline-pulse {
+        50% {
+          outline-color: var(--color-outline);
+        }
+      }
+    }
+
+    &.error {
+      color: var(--color-red);
+      border-color: var(--color-red);
+
+      &:focus-visible {
+        outline: 4px solid transparent;
+        animation: 1s outline-error-pulse ease-out infinite;
+
+        @keyframes outline-error-pulse {
+          50% {
+            outline-color: var(--color-red);
+          }
+        }
+      }
+    }
+  }
+}
+
+.game-form-fields,
+.game-form-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: $form-gap;
+  justify-content: center;
+  align-items: center;
+  width: 25rem;
+  max-width: 100%;
+
+  input {
+    text-align: center;
+  }
+}
+
+.game-form-buttons {
+  flex-direction: column;
+}
+
+.game-form-field {
+  display: flex;
+  gap: $form-gap;
+  flex-direction: column;
+  flex: 1;
+
+  &--error {
+    border-color: var(--color-red);
+  }
+}
+
+.game-form-errors {
+  color: var(--color-red);
+  font-size: 0.875rem;
+}

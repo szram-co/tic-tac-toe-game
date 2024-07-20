@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'Blogger Sans';
+  font-weight: 300;
+  src:
+    local('BloggerSans'),
+    url('./BloggerSans.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Blogger Sans';
+  font-weight: 100;
+  src:
+    local('BloggerSans-Light'),
+    url('./BloggerSans-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Blogger Sans';
+  font-weight: 600;
+  src:
+    local('BloggerSans-Bold'),
+    url('./BloggerSans-Bold.ttf') format('truetype');
+}
