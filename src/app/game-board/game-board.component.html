@@ -1,26 +1,77 @@
 <div class="game-wrapper game-wrapper--vertical">
+  <div class="game-title">
+    <ng-container *ngIf="winner">
+      <h1>Gratulacje!</h1>
+      <div class="game-next-move">
+        Wygrywa gracz
+        <div class="game-next-move__player">
+          {{ currentPlayer }}
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!winner && currentPlayer !== ''">
+      <h1>Kółko i Krzyżyk</h1>
+      <div class="game-next-move">
+        Kolejny ruch
+        <div class="game-next-move__player">
+          {{ currentPlayer }}
+          <app-game-symbol-circle
+            *ngIf="currentSymbol === 'O'"
+            [size]="20"
+            [width]="15"
+          />
+          <app-game-symbol-cross
+            *ngIf="currentSymbol === 'X'"
+            [size]="20"
+            [width]="15"
+          />
+        </div>
+      </div>
+    </ng-container>
+  </div>
   <div class="game-board-container">
-    <div
-      [ngClass]="{
-        'game-player': true,
-        'game-player--current': player1 === currentPlayer,
-      }"
-    >
-      <div class="game-player__label">Gracz #1</div>
-      <div class="game-player__name">{{ player1 }}</div>
+    <div class="game-player">
+      <div
+        [ngClass]="{
+          'game-player-name': true,
+          'game-player-name--first': true,
+          'game-player-name--current': player1 === currentPlayer,
+        }"
+      >
+        <div class="game-player-label">Gracz #1</div>
+        <div class="game-player-value">{{ player1 }}</div>
+        <div class="game-player-symbol">
+          <app-game-symbol-circle
+            *ngIf="player1Symbol === 'O'"
+            [size]="150"
+            [width]="20"
+          />
+          <app-game-symbol-cross
+            *ngIf="player1Symbol === 'X'"
+            [size]="150"
+            [width]="20"
+          />
+        </div>
+      </div>
     </div>
-    <div class="game-board">
-      <ng-container *ngFor="let row of board; let rowIndex = index">
-        <div
-          *ngFor="let cell of row; let cellIndex = index"
-          (click)="makeMove(rowIndex, cellIndex)"
-          [ngClass]="{
-            'game-board__cell': true,
-            'game-board__cell--circle': cell === 'O',
-            'game-board__cell--cross': cell === 'X',
-          }"
-        ></div>
-      </ng-container>
+    <div [ngClass]="gameBoardClassName">
+      <div
+        *ngFor="let cell of board; trackBy: trackByCell"
+        (click)="makeMove(cell)"
+        [id]="cell.id"
+        [ngClass]="{
+          'game-board__cell': true,
+          'game-board__cell--match': cell.isMatch,
+          'game-board__cell--empty': cell.value === '',
+        }"
+      >
+        <ng-container *ngIf="cell.value === 'O'">
+          <app-game-symbol-circle />
+        </ng-container>
+        <ng-container *ngIf="cell.value === 'X'">
+          <app-game-symbol-cross />
+        </ng-container>
+      </div>
 
       <div class="game-board__lines">
         <div class="line"></div>
@@ -29,90 +80,29 @@
         <div class="line"></div>
       </div>
     </div>
-    <div
-      [ngClass]="{
-        'game-player': true,
-        'game-player--current': player2 === currentPlayer,
-      }"
-    >
-      <div class="game-player__label">Gracz #2</div>
-      <div class="game-player__name">{{ player2 }}</div>
+    <div class="game-player">
+      <div
+        [ngClass]="{
+          'game-player-name': true,
+          'game-player-name--second': true,
+          'game-player-name--current': player2 === currentPlayer,
+        }"
+      >
+        <div class="game-player-label">Gracz #2</div>
+        <div class="game-player-value">{{ player2 }}</div>
+        <div class="game-player-symbol">
+          <app-game-symbol-circle
+            *ngIf="player2Symbol === 'O'"
+            [size]="150"
+            [width]="20"
+          />
+          <app-game-symbol-cross
+            *ngIf="player2Symbol === 'X'"
+            [size]="150"
+            [width]="20"
+          />
+        </div>
+      </div>
     </div>
   </div>
-  <div
-    [ngClass]="{
-      'game-player-move': true,
-      'game-player-move--first': player1 === currentPlayer,
-      'game-player-move--second': player2 === currentPlayer,
-    }"
-  >
-    Ruch gracza <strong>{{ currentPlayer }}</strong>
-  </div>
 </div>
-
-<!--
-<div class="container container--center">
-  <div class="text-tip">
-    Ruch gacza <strong>{{ currentPlayer }}</strong> ({{ currentSymbol }})
-  </div>
-  <h1 *ngIf="winner?.length">WINNER: {{ winner }}</h1>
-  <div class="board">
-    <ng-container *ngFor="let row of board; let rowIndex = index">
-      <div
-        class="cell"
-        *ngFor="let cell of row; let cellIndex = index"
-        (click)="makeMove(rowIndex, cellIndex)"
-      >
-        <ng-container *ngIf="cell === 'O'">
-          <svg
-            class="circle"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 100 100"
-            width="100"
-            height="100"
-          >
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              stroke="blue"
-              stroke-width="10"
-              fill="transparent"
-            />
-          </svg>
-        </ng-container>
-        <ng-container *ngIf="cell === 'X'">
-          <svg
-            class="cross"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 100 100"
-            width="100"
-            height="100"
-          >
-            <line
-              x1="10"
-              y1="10"
-              x2="90"
-              y2="90"
-              stroke="red"
-              stroke-width="10"
-            />
-            <line
-              x1="10"
-              y1="90"
-              x2="90"
-              y2="10"
-              stroke="red"
-              stroke-width="10"
-            />
-          </svg>
-        </ng-container>
-      </div>
-    </ng-container>
-  </div>
-  <div class="form-wrapper">
-    <button mat-raised-button (click)="resetGame()">Od nowa</button>
-    <button mat-raised-button (click)="goToHome()">Zmień graczy</button>
-  </div>
-</div>
--->

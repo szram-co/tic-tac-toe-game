@@ -1,0 +1,17 @@
+<svg
+  class="circle"
+  xmlns="http://www.w3.org/2000/svg"
+  [attr.viewBox]="[0, 0, size, size].join(' ')"
+  [attr.width]="size"
+  [attr.height]="size"
+  [attr.stroke-dasharray]="circleCircumference"
+  [attr.stroke-dashoffset]="circleCircumference"
+>
+  <circle
+    [attr.cx]="size / 2"
+    [attr.cy]="size / 2"
+    [attr.stroke-width]="crossStroke"
+    [attr.r]="circleR"
+    fill="transparent"
+  />
+</svg>

@@ -1,58 +1,7 @@
 @use 'sass:math';
 
-$line-animation-speed: 0.5s;
-$line-animation-finish-delay: 2s;
-
-.game-player {
-  flex: 1;
-  top: -0.5rem;
-  position: relative;
-  color: inherit;
-  opacity: 0;
-  transition: 0.3s transform ease;
-
-  &:first-of-type {
-    text-align: right;
-    animation: show-player-1 0.5s ease-out forwards;
-    animation-delay: #{$line-animation-finish-delay};
-    right: 2rem;
-
-    @keyframes show-player-1 {
-      to {
-        right: 0;
-        opacity: 1;
-      }
-    }
-  }
-
-  &:last-of-type {
-    animation: show-player-2 0.5s ease-out forwards;
-    animation-delay: #{$line-animation-finish-delay};
-    left: 2rem;
-
-    @keyframes show-player-2 {
-      to {
-        left: 0;
-        opacity: 1;
-      }
-    }
-  }
-
-  &--current {
-    color: var(--color-5);
-    transform: scale(1.2);
-  }
-
-  &__label {
-    opacity: 0.5;
-    margin-bottom: 0.25rem;
-  }
-
-  &__name {
-    font-size: 2rem;
-    text-transform: uppercase;
-  }
-}
+$line-animation-speed: 0.25s;
+$line-animation-finish-delay: $line-animation-speed * 4;
 
 .game-board-container {
   max-width: 100%;
@@ -60,7 +9,7 @@ $line-animation-finish-delay: 2s;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -75,6 +24,10 @@ $line-animation-finish-delay: 2s;
   }
 }
 
+.game-player {
+  flex: 1;
+}
+
 .game-board {
   $cell-size: 8rem;
   $cell-gap: 0.25rem;
@@ -87,27 +40,25 @@ $line-animation-finish-delay: 2s;
   padding: math.div($cell-gap, 2);
   border-radius: $cell-gap * 2;
 
+  --symbol-animation-speed: 0.25s;
+
   &__cell {
     width: $cell-size;
     height: $cell-size;
     transition: 0.3s all ease-in-out;
     border-radius: $cell-gap * 2;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
 
-    &:hover {
+    &--match {
+      color: var(--color-5);
+    }
+
+    &--empty:hover {
+      cursor: pointer;
       background: rgba(#fff, 0.025);
-    }
-
-    &--circle {
-      background: red;
-    }
-
-    &--cross {
-      background: blue;
     }
   }
 
@@ -169,30 +120,190 @@ $line-animation-finish-delay: 2s;
       }
     }
   }
-}
 
-.game-player-move {
-  font-size: 0.75rem;
-  text-align: center;
-  color: var(--color-5);
-  text-transform: uppercase;
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(1.25);
+  $winner-line-size: 0.5rem;
 
-  animation: show-player-move #{$line-animation-speed} ease-out forwards;
-  animation-delay: #{$line-animation-finish-delay};
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: $winner-line-size;
+    height: $winner-line-size;
+    border-radius: math.div($winner-line-size, 2);
+    background: var(--color-5);
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+  }
 
-  @keyframes show-player-move {
-    to {
+  // Rows
+
+  &--row-1:before {
+    transform: translateY(-50%);
+    left: 0;
+    top: 16.6666%;
+    animation: draw-line-row $line-animation-speed ease-out forwards;
+  }
+
+  &--row-2:before {
+    transform: translateY(-50%);
+    left: 0;
+    top: 50%;
+    animation: draw-line-row $line-animation-speed ease-out forwards;
+  }
+
+  &--row-3:before {
+    transform: translateY(-50%);
+    left: 0;
+    top: 83.3333%;
+    animation: draw-line-row $line-animation-speed ease-out forwards;
+  }
+
+  @keyframes draw-line-row {
+    50% {
       opacity: 1;
-      transform: scale(1);
+    }
+    to {
+      width: 100%;
+      opacity: 1;
     }
   }
 
-  strong {
-    margin-top: 0.5rem;
-    display: block;
+  // Cols
+
+  &--col-1:before {
+    transform: translateX(-50%);
+    top: 0;
+    left: 16.6666%;
+    animation: draw-line-col $line-animation-speed ease-out forwards;
+  }
+
+  &--col-2:before {
+    transform: translateX(-50%);
+    top: 0;
+    left: 50%;
+    animation: draw-line-col $line-animation-speed ease-out forwards;
+  }
+
+  &--col-3:before {
+    transform: translateX(-50%);
+    top: 0;
+    left: 83.3333%;
+    animation: draw-line-col $line-animation-speed ease-out forwards;
+  }
+
+  @keyframes draw-line-col {
+    50% {
+      opacity: 1;
+    }
+    to {
+      height: 100%;
+      opacity: 1;
+    }
+  }
+
+  // Diagonals
+  &--left-top-right-bot:before {
+    transform: rotate(45deg) translateY(-50%);
+    transform-origin: top left;
+    top: 5%;
+    left: 5%;
+    animation: draw-line-diag $line-animation-speed ease-out forwards;
+  }
+
+  &--right-top-left-bot:before {
+    transform: rotate(-45deg) translateY(-50%);
+    transform-origin: top right;
+    top: 5%;
+    right: 5%;
+    animation: draw-line-diag $line-animation-speed ease-out forwards;
+  }
+
+  @keyframes draw-line-diag {
+    50% {
+      opacity: 1;
+    }
+    to {
+      width: #{math.sqrt(2) * 90%};
+      opacity: 1;
+    }
+  }
+
+  &--finished {
+    pointer-events: none;
+  }
+}
+
+.game-next-move {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
+
+  --symbol-animation-speed: 0.5s;
+
+  &__player {
+    font-weight: bold;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--color-5);
+    text-transform: uppercase;
+  }
+}
+
+.game-player-name {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .game-player-label {
+    opacity: 0.5;
+    position: relative;
+    z-index: 1;
+  }
+
+  .game-player-value {
+    text-transform: uppercase;
     font-size: 1.5rem;
+    color: var(--color-6);
+    position: relative;
+    z-index: 1;
+  }
+
+  .game-player-symbol {
+    color: var(--color-dark);
+    position: absolute;
+    top: 100%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+  }
+
+  &--first {
+    justify-content: flex-end;
+    text-align: right;
+
+    .game-player-symbol {
+      left: 0;
+    }
+  }
+
+  &--second {
+    justify-content: flex-start;
+    text-align: left;
+
+    .game-player-symbol {
+      left: 100%;
+    }
+  }
+
+  &--current {
+    color: var(--color-5);
+
+    .game-player-value {
+      color: var(--color-5);
+    }
   }
 }

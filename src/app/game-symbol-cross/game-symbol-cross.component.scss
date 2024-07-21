@@ -1,0 +1,24 @@
+:host {
+  display: block;
+
+  --stroke-animation: var(--symbol-animation-speed, 1s);
+}
+
+.cross {
+  display: block;
+
+  line {
+    stroke: var(--stroke-color, currentColor);
+    animation: draw-stroke var(--stroke-animation) ease-out forwards;
+
+    @keyframes draw-stroke {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    &:last-of-type {
+      animation-delay: calc(var(--stroke-animation) / 2);
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.game-form-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 25rem;
+  max-width: 100%;
+
+  input {
+    text-align: center;
+  }
+}

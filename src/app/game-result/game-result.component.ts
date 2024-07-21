@@ -4,11 +4,12 @@ import { NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { KEY_PLAYER_1, KEY_PLAYER_2 } from '../constants';
 import { StorageService } from '../services/storage.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-game-result',
   standalone: true,
-  imports: [NgIf, MatButton],
+  imports: [NgIf, MatButton, FormsModule],
   templateUrl: './game-result.component.html',
   styleUrl: './game-result.component.scss',
 })

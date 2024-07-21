@@ -1,15 +1,22 @@
-<div class="container container--center">
-  <div class="text-tip">
-    <ng-container *ngIf="winner">Zwycięzca może być tylko jeden!</ng-container>
-    <ng-container *ngIf="draw">Cóż za wspaniała rozgrywka!</ng-container>
+<div class="game-wrapper game-wrapper--vertical">
+  <div class="game-title">
+    <p>
+      <ng-container *ngIf="winner"
+        >Zwycięzca może być tylko jeden!</ng-container
+      >
+      <ng-container *ngIf="draw">Cóż za wspaniała rozgrywka!</ng-container>
+    </p>
+    <h1>
+      <ng-container *ngIf="winner">Zwycięża {{ winner }}!</ng-container>
+      <ng-container *ngIf="draw">Remis</ng-container>
+    </h1>
   </div>
-  <h1>
-    <ng-container *ngIf="winner">{{ winner }}</ng-container>
-    <ng-container *ngIf="draw">Remis</ng-container>
-  </h1>
-
-  <div class="form-wrapper">
-    <button mat-raised-button (click)="goToHome()">Zmień graczy</button>
-    <button mat-raised-button (click)="restartGame()">Kolejna runda</button>
+  <div class="game-form-buttons">
+    <button class="secondary" type="submit" (click)="goToHome()">
+      Zmień graczy
+    </button>
+    <button class="primary" type="submit" (click)="restartGame()">
+      Kolejna runda
+    </button>
   </div>
 </div>
