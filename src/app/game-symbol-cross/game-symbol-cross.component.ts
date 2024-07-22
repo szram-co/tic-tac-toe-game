@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-game-symbol-cross',
@@ -7,7 +13,7 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './game-symbol-cross.component.html',
   styleUrl: './game-symbol-cross.component.scss',
 })
-export class GameSymbolCrossComponent implements OnInit {
+export class GameSymbolCrossComponent implements OnInit, OnChanges {
   @Input() size: number = 100;
   @Input() width: number = 8;
 
@@ -15,6 +21,16 @@ export class GameSymbolCrossComponent implements OnInit {
   crossDiagonal: number = 0;
 
   ngOnInit() {
+    this.calculateCrossProperties();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['size'] || changes['width']) {
+      this.calculateCrossProperties();
+    }
+  }
+
+  private calculateCrossProperties() {
     this.crossStroke = (this.width / 100) * this.size;
     this.crossDiagonal = this.size * Math.sqrt(2);
   }

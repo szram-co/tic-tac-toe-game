@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { MatRipple } from '@angular/material/core';
@@ -45,6 +50,8 @@ export class GameBoardComponent implements OnInit {
   player2: string = this.storageService.get(KEY_PLAYER_2);
   player2Symbol: string = '';
 
+  gameSymbolSize = 0;
+
   private readonly WIN_PATTERN_CLASS = {
     // Rows
     'row-1': [0, 1, 2],
@@ -67,6 +74,16 @@ export class GameBoardComponent implements OnInit {
   ngOnInit() {
     this.initializeBoard();
     this.randomizeFirstPlayer();
+    this.updateGameSymbolSize(window.innerWidth);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updateGameSymbolSize(event.target.innerWidth);
+  }
+
+  updateGameSymbolSize(width: number) {
+    this.gameSymbolSize = width <= 1024 ? 80 : 100;
   }
 
   initializeBoard() {

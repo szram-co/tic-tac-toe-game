@@ -1,9 +1,11 @@
-$form-gap: 1rem;
+$form-gap: 0.5rem;
 
 .game-form {
+  width: 100%;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  max-width: 90%;
+  align-items: center;
   gap: $form-gap;
   text-align: center;
 
@@ -13,7 +15,7 @@ $form-gap: 1rem;
 
   input {
     width: 100%;
-    font-size: 1.25rem;
+    font-size: 1rem;
     background: transparent;
     margin: 0;
     color: var(--color-6);
@@ -58,11 +60,15 @@ $form-gap: 1rem;
 .game-form-buttons {
   display: flex;
   flex-direction: row;
-  gap: $form-gap;
+  gap: 1rem;
   justify-content: center;
   align-items: center;
   width: 25rem;
   max-width: 100%;
+
+  @media screen and (max-width: 630px) {
+    flex-direction: column;
+  }
 
   input {
     text-align: center;
@@ -70,6 +76,7 @@ $form-gap: 1rem;
 }
 
 .game-form-buttons {
+  margin-top: 1rem;
   flex-direction: column;
 }
 
