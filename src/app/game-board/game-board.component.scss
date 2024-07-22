@@ -92,10 +92,10 @@ $line-animation-finish-delay: $line-animation-speed * 4;
 
   @include breakpoint-md() {
     justify-content: flex-start;
-  }
 
-  @media screen and (max-height: 590px) {
-    display: none;
+    @media screen and (max-height: 590px) {
+      display: none;
+    }
   }
 
   .game-player {
